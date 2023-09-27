@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégorie de contact{% endblock %}
+
+{% block body %}
+    {% set total = 0 %}
+    <h1 class="text-center pt-2">Statistiques des catégories</h1>
+    <hr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col-8">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">Libellé de la catégorie</font>
+                    </font>
+                </th>
+                <th scope="col">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">Nombre de contacts</font>
+                    </font>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for laCategorie in lesCategories %}
+            <tr>
+                <th scope="row">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">{{laCategorie.libelle}}</font>
+                    </font>
+                </th>
+                <td>
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">{{laCategorie.nbContacts}}</font>
+                    </font>
+                </td>
+            </tr>
+        {% set total = total + laCategorie.nbContacts %}
+        {% endfor %}
+        </tbody>
+        <tfoot class="table-warning">
+            <tr>
+                <th scope="row">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">Total</font>
+                    </font>
+                </th>
+                <th scope="col">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">{{total}}</font>
+                    </font>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+<br>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<br>
+{% endblock %}
+{% block javascripts %}
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script>
+window.onload = function() {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	exportEnabled: true,
+	animationEnabled: true,
+	title: {
+		text: "Répartition des contacts par catégorie"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 25,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		showInLegend: "true",
+		legendText: "{label}",
+		indexLabelFontSize: 16,
+		indexLabel: "{label} - {y}%",
+		dataPoints: [
+			{{data|raw}}
+		]
+	}]
+});
+chart.render();
+}
+</script>
+
+{% endblock %}
+
+

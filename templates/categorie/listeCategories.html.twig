@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des catégories{% endblock %}
+
+{% block body %}
+<h1 class="text-center pt-2">Liste des catégotie</h1>
+
+<div class="row">
+	{% for laCategorie in lesCategories %}
+		<div class="col mx-auto">
+			<div class="card mb-3">
+				<h4 class="card-header">{{ laCategorie.libelle }}</h4>
+				<img class="avatar mx-auto my-4" style="max-width: 250px; height: 180px; display: block;" src=" {{ asset(laCategorie.image) }} "></img>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item" style="height: 250px">{{ laCategorie.description }}</li>
+				</ul>
+				<div class="card-body">
+				<a href="{{ path("ficheCategorie", {'id': laCategorie.id}) }}" class="btn btn-primary">détail</a>
+				</div>
+				<h5 class="card-header"><span class="badge bg-warning">{{ laCategorie.contacts|length }} contacts</span></h5>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}
